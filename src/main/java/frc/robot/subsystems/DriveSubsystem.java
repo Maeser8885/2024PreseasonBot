@@ -4,19 +4,34 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class DriveSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-
-  PWMSparkMax m_intakeMotor = new PWMSparkMax(Constants.MotorConstants.kIntakeMotorId);
-
-  public IntakeSubsystem() {
-    
+  Spark rSpark = new Spark(Constants.MotorConstants.frMotorPort);
+  Spark lSpark = new Spark(Constants.MotorConstants.flMotorPort);
+  Spark m_brMotorController = new Spark(Constants.MotorConstants.brMotorPort);
+  Spark m_blMotorController = new Spark(Constants.MotorConstants.blMotorPort);
+  DifferentialDrive dDrive;
+  public DriveSubsystem() {
+    rSpark.addFollower(m_brMotorController);
+    lSpark.addFollower(m_blMotorController);
+    rSpark.setInverted(true); //TODO check if it works
+    dDrive = new DifferentialDrive(lSpark, rSpark);
   }
+
+  public void arcadeDrive(double xSpeed, double zRotation){
+    dDrive.arcadeDrive(xSpeed, zRotation);
+  }
+
+   public Command getArcadeDriveCommand(){
+        return this.run(() -> arcadeDrive(RobotContainer.m_driverController.getY(), -RobotContainer.m_driverController.getTwist()));
+    }
 
   /**
    * Example command factory method.
@@ -32,17 +47,6 @@ public class IntakeSubsystem extends SubsystemBase {
         });
   }
 
-  public void intake() {
-    if (m_intakeMotor != null){
-      m_intakeMotor.set(Constants.MotorConstants.IntakeSpeed);
-    }
-  }
-
-  public void stop(){
-    if (m_intakeMotor != null){
-      m_intakeMotor.set(0);
-    }
-  }
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *

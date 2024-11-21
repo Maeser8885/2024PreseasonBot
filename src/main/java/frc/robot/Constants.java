@@ -20,5 +20,9 @@ public final class Constants {
   public static final class MotorConstants {
     public static final int kIntakeMotorId = 0;
     public static final double IntakeSpeed = 1;
+    public static final int frMotorPort = 7;
+    public static final int flMotorPort = 8;
+    public static final int brMotorPort = 7;
+    public static final int blMotorPort = 8;
   }
 }
