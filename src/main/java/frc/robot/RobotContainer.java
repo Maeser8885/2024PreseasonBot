@@ -7,9 +7,11 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.AgitatorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -27,8 +29,10 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  private final AgitatorSubsystem m_agitatorSubsystem = new AgitatorSubsystem();
+  private final ShooterSubsystem m_outtakeSubsystem = new ShooterSubsystem();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  // Instantiate Joystick (change this to xbox controller if we need it)
   public static final CommandJoystick m_driverController =
       new CommandJoystick(OperatorConstants.kDriverControllerPort);
 
@@ -36,6 +40,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    
   }
 
   /**
@@ -48,14 +53,19 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // Get the default command from the Drive Subsystem
+    m_driveSubsystem.setDefaultCommand(m_driveSubsystem.getArcadeDriveCommand());
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.button(1).whileTrue(new RunCommand(()-> {m_intakeSubsystem.intake();}, m_intakeSubsystem ));
-    m_driverController.button(1).whileFalse(new RunCommand(()-> {m_intakeSubsystem.stop();}, m_intakeSubsystem ));
+    m_driverController.button(2).whileTrue(new RunCommand(()-> {m_intakeSubsystem.intake();}, m_intakeSubsystem ));
+    m_driverController.button(2).whileFalse(new RunCommand(()-> {m_intakeSubsystem.stop();}, m_intakeSubsystem ));
+    m_driverController.button(Constants.OperatorConstants.agitatorToggle).toggleOnTrue(new RunCommand(() -> {m_agitatorSubsystem.motorToggleGo();}, m_agitatorSubsystem));
+    m_driverController.button(1).whileTrue(new RunCommand(()-> {m_outtakeSubsystem.go();}, m_outtakeSubsystem ));
+    m_driverController.button(1).whileFalse(new RunCommand(()-> {m_outtakeSubsystem.notGo();}, m_outtakeSubsystem ));
   }
 
   /**
@@ -65,6 +75,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
+    
     return Autos.exampleAuto(m_exampleSubsystem);
   }
 }
