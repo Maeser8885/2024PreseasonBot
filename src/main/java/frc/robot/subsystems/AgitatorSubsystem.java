@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,9 +15,9 @@ import frc.robot.Constants;
 //blender subsystem(clockwise of course)
 public class AgitatorSubsystem extends SubsystemBase {
 
-  PWMSparkMax agitatorMotor;
+  CANSparkMax agitatorMotor;
   public AgitatorSubsystem() {
-    agitatorMotor = new PWMSparkMax(Constants.MotorConstants.agitatorMotorPort);
+    agitatorMotor = new CANSparkMax(Constants.MotorConstants.agitatorMotorPort, CANSparkLowLevel.MotorType.kBrushless);
     agitatorMotor.set(0);
   }
   //carkey

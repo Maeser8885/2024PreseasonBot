@@ -5,18 +5,20 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.AgitatorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.*;;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  //private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final AgitatorSubsystem m_agitatorSubsystem = new AgitatorSubsystem();
   private final ShooterSubsystem m_outtakeSubsystem = new ShooterSubsystem();
@@ -54,18 +56,18 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Get the default command from the Drive Subsystem
-    m_driveSubsystem.setDefaultCommand(m_driveSubsystem.getArcadeDriveCommand());
+      m_driveSubsystem.setDefaultCommand(m_driveSubsystem.getArcadeDriveCommand());
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.button(2).whileTrue(new RunCommand(()-> {m_intakeSubsystem.intake();}, m_intakeSubsystem ));
-    m_driverController.button(2).whileFalse(new RunCommand(()-> {m_intakeSubsystem.stop();}, m_intakeSubsystem ));
+    //m_driverController.button(2).whileTrue(new RunCommand(()-> {m_intakeSubsystem.intake();}, m_intakeSubsystem ));
+    //m_driverController.button(2).whileFalse(new RunCommand(()-> {m_intakeSubsystem.stop();}, m_intakeSubsystem ));
     m_driverController.button(Constants.OperatorConstants.agitatorToggle).toggleOnTrue(new RunCommand(() -> {m_agitatorSubsystem.motorToggleGo();}, m_agitatorSubsystem));
-    m_driverController.button(1).whileTrue(new RunCommand(()-> {m_outtakeSubsystem.go();}, m_outtakeSubsystem ));
-    m_driverController.button(1).whileFalse(new RunCommand(()-> {m_outtakeSubsystem.notGo();}, m_outtakeSubsystem ));
+    //m_driverController.button(1).whileTrue(new RunCommand(()-> {m_outtakeSubsystem.go();}, m_outtakeSubsystem ));
+   // m_driverController.button(1).whileFalse(new RunCommand(()-> {m_outtakeSubsystem.notGo();}, m_outtakeSubsystem ));
   }
 
   /**
@@ -73,9 +75,18 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+    public SendableChooser<SequentialCommandGroup> AutoChooser = new SendableChooser<SequentialCommandGroup>();
+
+
+    public void setupDashboard() {
+    AutoChooser.setDefaultOption("Drive", new SequentialCommandGroup(new DriveTimedCommand(Constants.AutoConstants.aSpeed, Constants.AutoConstants.aTime, m_driveSubsystem)));
+    AutoChooser.addOption("Drive + Shoot", new SequentialCommandGroup(new ShootCommand(m_outtakeSubsystem, m_agitatorSubsystem)));
+    SmartDashboard.putData(AutoChooser);
+  }
+
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    
-    return Autos.exampleAuto(m_exampleSubsystem);
+    SequentialCommandGroup returnVal = AutoChooser.getSelected();
+    return new ShootCommand(m_outtakeSubsystem, m_agitatorSubsystem);
   }
 }
+  

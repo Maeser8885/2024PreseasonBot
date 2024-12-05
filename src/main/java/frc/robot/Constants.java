@@ -15,19 +15,24 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
-    public static final int agitatorToggle = 11;
+    public static final int agitatorToggle = 1;
   }
 
   public static final class MotorConstants {
     public static final int kIntakeMotorId = 0;
     public static final double IntakeSpeed = 1;
-    public static final int frMotorPort = 7;
-    public static final int flMotorPort = 8;
-    public static final int brMotorPort = 7;
-    public static final int blMotorPort = 8;
-    public static final int agitatorMotorPort = 99;
+    public static final int frMotorPort = 0;
+    public static final int flMotorPort = 2;
+    public static final int brMotorPort = 1;
+    public static final int blMotorPort = 3;
+    public static final int agitatorMotorPort = 7;
     public static double agitatorMotorSpeed = 0.1;
-    public static final int outtakeMotorPort = 54;
+    public static final int outtakeMotorPort = 9;
     public static final double Shootspeed = 0;
+  } 
+
+  public static final class AutoConstants{
+    public static final double aTime = 2;
+    public static final double aSpeed = 1;
   }
 }
