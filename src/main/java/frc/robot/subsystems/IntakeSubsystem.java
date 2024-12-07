@@ -12,9 +12,10 @@ import frc.robot.Constants;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
-  PWMSparkMax m_intakeMotor = new PWMSparkMax(Constants.MotorConstants.kIntakeMotorId);
+  CANSparkMax m_intakeMotor;
 
   public IntakeSubsystem() {
+    m_intakeMotor = new CANSparkMax(Constants.MotorConstants.kIntakeMotorId, CANSparkLowLevel.MotorType.kBrushless);
     // m_intakeMotor.setInverted(true);
     
   }
