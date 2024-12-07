@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-//blender subsystem(clockwise of course)
 public class AgitatorSubsystem extends SubsystemBase {
 
   CANSparkMax agitatorMotor;
@@ -26,9 +25,7 @@ public class AgitatorSubsystem extends SubsystemBase {
     if(agitatorMotor.get() == 0){
     agitatorMotor.set(Constants.MotorConstants.agitatorMotorSpeed);
     }
-    //if this errors its charlies fault
-    // nuh uh
-    //yuh uh
+    
     else{
       agitatorMotor.set(0);
     }

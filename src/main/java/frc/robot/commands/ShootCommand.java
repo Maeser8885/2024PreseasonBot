@@ -19,5 +19,4 @@ public class ShootCommand extends Command{
     public void execute(){
         shooter.go(Constants.AutoConstants.shootTime);
     }
-
 }

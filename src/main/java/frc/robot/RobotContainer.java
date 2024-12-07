@@ -31,6 +31,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  //comment this back in for an agitator! Yippee!
   //private final AgitatorSubsystem m_agitatorSubsystem = new AgitatorSubsystem();
   private final ShooterSubsystem m_outtakeSubsystem = new ShooterSubsystem();
 
@@ -79,8 +80,8 @@ public class RobotContainer {
 
 
     public void setupDashboard() {
-    AutoChooser.setDefaultOption("Drive", new SequentialCommandGroup(new DriveTimedCommand(Constants.AutoConstants.aSpeed, Constants.AutoConstants.aTime, m_driveSubsystem)));
-    AutoChooser.addOption("Drive + Shoot", new SequentialCommandGroup(new ShootCommand(m_outtakeSubsystem)));
+    AutoChooser.setDefaultOption("Drive", new SequentialCommandGroup(new DriveTimedCommand(Constants.AutoConstants.aSpeed, Constants.AutoConstants.aTime, Constants.AutoConstants.aTurnSpeed, m_driveSubsystem)));
+    AutoChooser.addOption("Drive + Shoot", new SequentialCommandGroup(new DriveTimedCommand(3, 0, 0.1, m_driveSubsystem), new ShootCommand(m_outtakeSubsystem)));
 
     SmartDashboard.putData(AutoChooser);
   }

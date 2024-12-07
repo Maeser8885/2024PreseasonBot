@@ -8,13 +8,15 @@ public class DriveTimedCommand extends Command {
     private final DriveSubsystem m_subsystem;
     private final double m_speed;
     private final double m_time;
+    private final double m_turnSpeed;
 
     private final Timer m_timer = new Timer();
 
-    public DriveTimedCommand(double time, double speed, DriveSubsystem subsystem) {
+    public DriveTimedCommand(double time, double speed, double turnSpeed, DriveSubsystem subsystem) {
         m_time = time;
         m_speed = speed;
         m_subsystem = subsystem;
+        m_turnSpeed = turnSpeed;
 
         addRequirements(subsystem);
     }
@@ -29,7 +31,7 @@ public class DriveTimedCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_subsystem.arcadeDrive(m_speed, 0);
+        m_subsystem.arcadeDrive(m_speed, m_turnSpeed);
     }
 
     // Called once the command ends or is interrupted.

@@ -19,8 +19,8 @@ public final class Constants {
   }
 
   public static final class MotorConstants {
-    public static final int kIntakeMotorId = 0;
-    public static final double IntakeSpeed = 1;
+    public static final int kIntakeMotorId = 1;
+    public static final double IntakeSpeed = .5;
     public static final int frMotorPort = 0;
     public static final int flMotorPort = 2;
     public static final int brMotorPort = 1;
@@ -35,5 +35,6 @@ public final class Constants {
     public static final double aTime = 2;
     public static final double aSpeed = 1;
     public static final double shootTime = 3; //This is in seconds
+    public static double aTurnSpeed = 0;
   }
 }
