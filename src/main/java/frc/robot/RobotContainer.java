@@ -29,9 +29,9 @@ import frc.robot.commands.*;;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  //private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  private final AgitatorSubsystem m_agitatorSubsystem = new AgitatorSubsystem();
+  //private final AgitatorSubsystem m_agitatorSubsystem = new AgitatorSubsystem();
   private final ShooterSubsystem m_outtakeSubsystem = new ShooterSubsystem();
 
   // Instantiate Joystick (change this to xbox controller if we need it)
@@ -63,9 +63,9 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    //m_driverController.button(2).whileTrue(new RunCommand(()-> {m_intakeSubsystem.intake();}, m_intakeSubsystem ));
-    //m_driverController.button(2).whileFalse(new RunCommand(()-> {m_intakeSubsystem.stop();}, m_intakeSubsystem ));
-    m_driverController.button(Constants.OperatorConstants.agitatorToggle).toggleOnTrue(new RunCommand(() -> {m_agitatorSubsystem.motorToggleGo();}, m_agitatorSubsystem));
+    m_driverController.button(2).whileTrue(new RunCommand(()-> {m_intakeSubsystem.intake();}, m_intakeSubsystem ));
+    m_driverController.button(2).whileFalse(new RunCommand(()-> {m_intakeSubsystem.stop();}, m_intakeSubsystem ));
+    //m_driverController.button(Constants.OperatorConstants.agitatorToggle).toggleOnTrue(new RunCommand(() -> {m_agitatorSubsystem.motorToggleGo();}, m_agitatorSubsystem));
     //m_driverController.button(1).whileTrue(new RunCommand(()-> {m_outtakeSubsystem.go();}, m_outtakeSubsystem ));
    // m_driverController.button(1).whileFalse(new RunCommand(()-> {m_outtakeSubsystem.notGo();}, m_outtakeSubsystem ));
   }
@@ -80,13 +80,14 @@ public class RobotContainer {
 
     public void setupDashboard() {
     AutoChooser.setDefaultOption("Drive", new SequentialCommandGroup(new DriveTimedCommand(Constants.AutoConstants.aSpeed, Constants.AutoConstants.aTime, m_driveSubsystem)));
-    AutoChooser.addOption("Drive + Shoot", new SequentialCommandGroup(new ShootCommand(m_outtakeSubsystem, m_agitatorSubsystem)));
+    AutoChooser.addOption("Drive + Shoot", new SequentialCommandGroup(new ShootCommand(m_outtakeSubsystem)));
+
     SmartDashboard.putData(AutoChooser);
   }
 
   public Command getAutonomousCommand() {
     SequentialCommandGroup returnVal = AutoChooser.getSelected();
-    return new ShootCommand(m_outtakeSubsystem, m_agitatorSubsystem);
+    return returnVal;
   }
 }
   

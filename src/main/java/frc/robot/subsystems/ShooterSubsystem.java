@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,8 +17,13 @@ import frc.robot.Constants;
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   PWMSparkMax outtakeMotor;
+  Timer timer;
+  private double m_time;
+
   public ShooterSubsystem() {
     outtakeMotor = new PWMSparkMax(Constants.MotorConstants.outtakeMotorPort);
+    timer = new Timer();
+    m_time = 300;
   }
 
   /**
@@ -34,16 +40,26 @@ public class ShooterSubsystem extends SubsystemBase {
         });
   }
 
-  public void go(){
+  public void go() {
+    // if (outtakeMotor != null) {
     outtakeMotor.set(Constants.MotorConstants.Shootspeed);
-  }
+  // }
 
-  public void notGo(){
+}
+
+  public void stop() {
     outtakeMotor.set(0);
   }
 
+  public void go(double time) {
+    outtakeMotor.set(Constants.MotorConstants.Shootspeed);
+    this.m_time = time;
+    timer.start();
+  }
+
   /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
+   * An example method querying a boolean state of the subsystem (for example, a
+   * digital sensor).
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
@@ -55,6 +71,12 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (timer.hasElapsed(m_time)) {
+      // Stops shooter after desired time
+      stop();
+      timer.stop();
+      timer.reset();
+    }
   }
 
   @Override

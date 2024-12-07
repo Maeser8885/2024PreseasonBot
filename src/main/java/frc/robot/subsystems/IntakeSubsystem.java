@@ -15,6 +15,7 @@ public class IntakeSubsystem extends SubsystemBase {
   PWMSparkMax m_intakeMotor = new PWMSparkMax(Constants.MotorConstants.kIntakeMotorId);
 
   public IntakeSubsystem() {
+    // m_intakeMotor.setInverted(true);
     
   }
 
