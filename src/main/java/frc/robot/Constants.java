@@ -21,10 +21,10 @@ public final class Constants {
   public static final class MotorConstants {
     public static final int kIntakeMotorId = 1;
     public static final double IntakeSpeed = .5;
-    public static final int frMotorPort = 0;
-    public static final int flMotorPort = 2;
-    public static final int brMotorPort = 1;
-    public static final int blMotorPort = 3;
+    public static final int frMotorPort = 8;
+    public static final int flMotorPort = 7;
+    public static final int brMotorPort = 8;
+    public static final int blMotorPort = 7;
     public static final int agitatorMotorPort = 7;
     public static double agitatorMotorSpeed = 0.1;
     public static final int outtakeMotorPort = 4;
@@ -33,8 +33,8 @@ public final class Constants {
 
   public static final class AutoConstants{
     public static final double aTime = 2;
-    public static final double aSpeed = 1;
-    public static final double shootTime = 3; //This is in seconds
-    public static double aTurnSpeed = 0;
+    public static final double aSpeed = 0;
+    public static final double shootTime = 0.5; //This is in seconds
+    public static double aTurnSpeed = 1;
   }
 }

@@ -88,7 +88,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     SequentialCommandGroup returnVal = AutoChooser.getSelected();
-    return returnVal;
+    return new SequentialCommandGroup(new DriveTimedCommand(Constants.AutoConstants.aSpeed, Constants.AutoConstants.aTime, 1, m_driveSubsystem));
   }
 }
   
