@@ -67,8 +67,8 @@ public class RobotContainer {
     m_driverController.button(2).whileTrue(new RunCommand(()-> {m_intakeSubsystem.intake();}, m_intakeSubsystem ));
     m_driverController.button(2).whileFalse(new RunCommand(()-> {m_intakeSubsystem.stop();}, m_intakeSubsystem ));
     //m_driverController.button(Constants.OperatorConstants.agitatorToggle).toggleOnTrue(new RunCommand(() -> {m_agitatorSubsystem.motorToggleGo();}, m_agitatorSubsystem));
-    //m_driverController.button(1).whileTrue(new RunCommand(()-> {m_outtakeSubsystem.go();}, m_outtakeSubsystem ));
-   // m_driverController.button(1).whileFalse(new RunCommand(()-> {m_outtakeSubsystem.notGo();}, m_outtakeSubsystem ));
+    m_driverController.button(1).whileTrue(new RunCommand(()-> {m_outtakeSubsystem.go();}, m_outtakeSubsystem ));
+   m_driverController.button(1).whileFalse(new RunCommand(()-> {m_outtakeSubsystem.stop();}, m_outtakeSubsystem ));
   }
 
   /**
@@ -87,8 +87,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    SequentialCommandGroup returnVal = AutoChooser.getSelected();
-    return new SequentialCommandGroup(new DriveTimedCommand(Constants.AutoConstants.aSpeed, Constants.AutoConstants.aTime, 1, m_driveSubsystem));
+    return new SequentialCommandGroup(new DriveTimedCommand(3, 0, 0.1, m_driveSubsystem), new ShootCommand(m_outtakeSubsystem));
   }
 }
   

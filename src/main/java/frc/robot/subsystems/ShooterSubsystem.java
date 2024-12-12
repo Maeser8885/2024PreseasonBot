@@ -4,6 +4,11 @@
 
 package frc.robot.subsystems;
 
+import javax.swing.plaf.TreeUI;
+
+import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,12 +21,13 @@ import frc.robot.Constants;
 //outtake subsystem
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  PWMSparkMax outtakeMotor;
+  CANSparkMax outtakeMotor;
   Timer timer;
   private double m_time;
 
   public ShooterSubsystem() {
-    outtakeMotor = new PWMSparkMax(Constants.MotorConstants.outtakeMotorPort);
+    outtakeMotor = new CANSparkMax(Constants.MotorConstants.kOutTakeMotorId, CANSparkLowLevel.MotorType.kBrushless);
+    outtakeMotor.setInverted(true);
     timer = new Timer();
     m_time = 300;
   }
@@ -82,5 +88,10 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
+  }
+
+  public void notGo() {
+    // TODO Auto-generated method stub
+    stop();
   }
 }

@@ -15,22 +15,22 @@ public class DriveSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   Spark rSpark = new Spark(Constants.MotorConstants.frMotorPort);
   Spark lSpark = new Spark(Constants.MotorConstants.flMotorPort);
-  //Spark m_brMotorController = new Spark(Constants.MotorConstants.brMotorPort);
-  //Spark m_blMotorController = new Spark(Constants.MotorConstants.blMotorPort);
+  // Spark m_brMotorController = new Spark(Constants.MotorConstants.brMotorPort);
+  // Spark m_blMotorController = new Spark(Constants.MotorConstants.blMotorPort);
   DifferentialDrive dDrive;
   public DriveSubsystem() {
-    //rSpark.addFollower(m_brMotorController);
-    //lSpark.addFollower(m_blMotorController);
+    // rSpark.addFollower(m_brMotorController);
+    // lSpark.addFollower(m_blMotorController);
     rSpark.setInverted(true); //TODO check if it works
     dDrive = new DifferentialDrive(lSpark, rSpark);
   }
 
   public void arcadeDrive(double xSpeed, double zRotation){
-    dDrive.arcadeDrive(xSpeed, zRotation);
+    dDrive.arcadeDrive(xSpeed, zRotation * 0.75);
   }
 
    public Command getArcadeDriveCommand(){
-        return this.run(() -> arcadeDrive(RobotContainer.m_driverController.getY(), -RobotContainer.m_driverController.getTwist()));
+        return this.run(() -> arcadeDrive(RobotContainer.m_driverController.getY() , -RobotContainer.m_driverController.getTwist()));
     }
 
   /**
