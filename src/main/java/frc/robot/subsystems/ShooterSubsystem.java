@@ -91,7 +91,12 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void notGo() {
-    // TODO Auto-generated method stub
     stop();
+  }
+
+  public void reverseShoot(){
+    if (outtakeMotor != null){
+      outtakeMotor.set(-Constants.MotorConstants.Shootspeed);
+    }
   }
 }

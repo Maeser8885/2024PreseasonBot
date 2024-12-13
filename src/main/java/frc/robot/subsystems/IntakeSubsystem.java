@@ -49,6 +49,12 @@ public class IntakeSubsystem extends SubsystemBase {
       m_intakeMotor.set(0);
     }
   }
+
+  public void reverseIntake(){
+    if (m_intakeMotor != null){
+      m_intakeMotor.set(-Constants.MotorConstants.IntakeSpeed);
+    }
+  }
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *

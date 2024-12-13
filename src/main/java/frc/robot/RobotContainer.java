@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import edu.wpi.first.cscore.UsbCamera;
 import frc.robot.subsystems.AgitatorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -13,6 +14,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -34,15 +36,18 @@ public class RobotContainer {
   //comment this back in for an agitator! Yippee!
   //private final AgitatorSubsystem m_agitatorSubsystem = new AgitatorSubsystem();
   private final ShooterSubsystem m_outtakeSubsystem = new ShooterSubsystem();
+  UsbCamera camera;
 
   // Instantiate Joystick (change this to xbox controller if we need it)
   public static final CommandJoystick m_driverController =
       new CommandJoystick(OperatorConstants.kDriverControllerPort);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    camera = CameraServer.startAutomaticCapture(0);
+    camera.setFPS(15);
+
     
   }
 
@@ -69,7 +74,12 @@ public class RobotContainer {
     //m_driverController.button(Constants.OperatorConstants.agitatorToggle).toggleOnTrue(new RunCommand(() -> {m_agitatorSubsystem.motorToggleGo();}, m_agitatorSubsystem));
     m_driverController.button(1).whileTrue(new RunCommand(()-> {m_outtakeSubsystem.go();}, m_outtakeSubsystem ));
    m_driverController.button(1).whileFalse(new RunCommand(()-> {m_outtakeSubsystem.stop();}, m_outtakeSubsystem ));
+    m_driverController.button(7).whileTrue(new RunCommand(()-> {m_outtakeSubsystem.reverseShoot();}, m_outtakeSubsystem ));
+    m_driverController.button(8).whileTrue(new RunCommand(()-> {m_intakeSubsystem.reverseIntake();}, m_intakeSubsystem ));
+       m_driverController.button(7).whileFalse(new RunCommand(()-> {m_outtakeSubsystem.stop();}, m_outtakeSubsystem ));
+       m_driverController.button(8).whileFalse(new RunCommand(()-> {m_intakeSubsystem.stop();}, m_intakeSubsystem ));
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -87,7 +97,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new SequentialCommandGroup(new DriveTimedCommand(3, 0, 0.1, m_driveSubsystem), new ShootCommand(m_outtakeSubsystem));
+    //distance from starting point to scoring zone253: 
+    return new SequentialCommandGroup(new DriveTimedCommand(3, -0.8, 0, m_driveSubsystem), new ShootCommand(m_outtakeSubsystem));
   }
 }
   
